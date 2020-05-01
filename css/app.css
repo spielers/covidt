@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&family=Open+Sans&display=swap');
+
+.card-header{
+		font-size: 22px;
+		font-weight: bolder;
+}
+.card-content{
+		font-weight: normal;
+		font-size: 17px;
+}
+body{
+		font-family: 'Nunito', sans-serif ! important;
+}
+hr{
+	border: 1px solid #eee;
+}

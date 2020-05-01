@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar (Android only) -->
+    <meta name="theme-color" content="#2196f3">
+    <!-- Your app title -->
+    <title>Covid Report</title>
+    <!-- Path to Framework7 Library Bundle CSS -->
+    <link rel="stylesheet" href="css/framework7.bundle.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="f7-icon/css/framework7-icons.css">
+    <!-- -->
+    <link rel="manifest" href="manifest.json" />
+    <!-- ios support -->
+    <link rel="apple-touch-icon" href="img/128.png" />
+    <link rel="apple-touch-icon" href="img/512.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
+    <meta name="theme-color" content="#db4938" />
+    <!-- Chart.js file -->
+    <script src="chartjs/Chart.js"></script>
+    <script src="chart/js/Chart.bundle.js"></script>
+    <link rel="chart/css/chart.css">
+</head>
+
+<body>
+    <!-- App root element -->
+    <div id="app">
+        <div class="view view-main">
+            <div data-name="home" class="page">
+                <div class="navbar">
+                    <div class="navbar-bg"></div>
+                    <div class="navbar-inner">
+                        <div class="title">Covid Reports 🧙</div>
+                        <div class="right" >
+                        	<i class="f7-icons icon color-theme-red" onclick="toggleDarkMode()">moon</i>
+                        </div>
+                    </div>
+                </div>
+                <div class="toolbar tabbar tabbar-labels toolbar-bottom">
+                	<div class="toolbar-inner">
+                		<a href="#tab-1" class="tab-link tab-link-active">
+                			<i class="icon f7-icons">chart_bar</i>
+                			<span class="tabbar-label" >Reports</span>
+                		</a>
+                		<a href="#tab-2" class="tab-link">
+                			<i class="icon f7-icons">drop</i>
+                			<span class="tabbar-label" >Self Test</span>
+                		</a>
+                	</div>
+                </div>
+                <!-- Scrollable page content -->
+                <div class="page-content">
+                    <div class="page">
+
+                        <div class="tabs">
+                            <div id="tab-1" class="page-content tab tab-active">
+                                <div class="block no-padding">
+                                    <div data-pagination='{"el": ".swiper-pagination"}' data-space-between="50" class="swiper-container swiper-init demo-swiper">
+                                        <div class="swiper-pagination"></div>
+                                        <div class="swiper-wrapper">
+
+                                            <div class="swiper-slide">
+                                                <div class="card bg-color-orange text-color-white">
+                                                    <div class="card-header" id="country">Your Country</div>
+                                                    <div class="card-content card-content-padding">
+                                                        <div id="country-report"> Total Case - <b>0</b>
+                                                            <br> Total Death - <b>0</b>
+                                                            <br> Recovered - <b>0</b>
+                                                            <hr> Case Today - <b>0</b>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="swiper-slide">
+                                                <div class="card bg-color-red text-color-white">
+                                                    <div class="card-header">Cases Worldwide 🌍</div>
+                                                    <div class="card-content card-content-padding">
+                                                        <div id="global-report"> Total Case - <b>0</b>
+                                                            <br> Total Death - <b>0</b>
+                                                            <br> Recovered - <b>0</b>
+                                                            <hr> Case Today - <b>0</b>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="block-title block-title-large">Global Chart 🌍</div>
+                                    <div class="block">
+                                        <canvas id="myChart" width="400" height="400"></canvas>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="tab-2" class="page-content tab">
+                                <div class="block">
+                                    <div class="card">
+                                        <div id="test_status" class="card-header"></div>
+                                        <div id="test" class="card-content card-content-padding"></div>
+                                        <div class="card-footer">Endeavor to Answer this questions sincerly...</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Link to another page -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ....Popup -->
+    
+    <div class="popup popup-enterNumber">
+    	<div class="block">
+    		<p>
+    			<!-- Close Popup -->
+    			<a class="link popup-close" href="#">
+    				<i class="icon f7-icons">multiply_circle</i>
+    			</a>
+    		</p>
+    		<div style="margin-top: 20px;font-weight: lighter;">
+    			<center>
+    				<i class="f7-icons color-deeporange" style="font-size: 50px" >envelope_open</i>
+    			</center>
+    			<h2 style="font-weight: normal;">Get Daily Report</h2>
+    			<p>Add your mobile number to receive daily report via SMS</p>
+    			<div class="item-input-wrap">
+    				<input type="number" name="name" id="m-number"  placeholder="Enter Mobile Number" >
+    				<hr>
+    			</div>
+    			<br>
+    			<button class="col button button-fill color-deeporange" onclick="sendNoToDb()">Submit</button>
+    		</div>
+    	</div>
+    </div>
+    <!-- ....Popup end -->
+    
+    <!-- Path to Framework7 Library Bundle JS-->
+    <script type="text/javascript" src="js/framework7.bundle.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/app.js"></script>
+    
+    <script type="text/javascript">
+    	// service worker
+    	if ("serviceWorker" in navigator) {
+    		window.addEventListener("load", function() {
+    			navigator.serviceWorker
+    			.register("/serviceWorker.js")
+    			.then(res => console.log("service worker registered"))
+    			.catch(err => console.log("service worker not registered", err));
+    		});
+    	}
+    	// sw ends
+       function sendNoToDb() {
+       		var number = document.getElementById("m-number").value;
+       		if(number == ""){
+       			app.dialog.alert("Cmon, thats not a number 😏", "Error");
+       		}else{
+       			app.dialog.preloader();
+       			app.request.get('https://insaer.org/covid/submit.php?phone_no=' + number, function (data) {
+       				// app.dialog.close();
+       				// console.log(data);
+       				if(data == "success"){
+       					// set viewed popup to true in local storage
+       					localStorage.viewedPopup = "true";
+       					app.dialog.close();
+       					app.dialog.alert("Mobile number added, You'll now receive daily reports 🎉", "Success");
+       				}else{
+       					app.dialog.close();
+       					app.dialog.alert("Server Error, Try Again", "Error");
+       				}
+       			});
+       		}
+       }
+        app.dialog.progress();
+        setTimeout(function() {
+
+            getWorldReport();
+            getStateReport();
+            app.dialog.close();
+            // Show popup after 4sec
+            setTimeout(() => {
+            	// show only if user have not viewed it
+            	if(localStorage.viewedPopup != "true"){
+            		app.popup.open('.popup-enterNumber', true);
+            	}else{
+            		console.log("Viewed popup already");
+            	}
+            }, 5000);
+
+        }, 2000);
+        
+    </script>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        fetch('https://corona.lmao.ninja/v2/all')
+            .then((data) => data.json())
+            .then((res) => {
+                var recovered = res.recovered;
+                var cases = res.cases;
+                var death = res.deaths;
+                var todayCase = res.todayCases;
+                //chart start
+                var myChart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Total Cases', 'Deaths', 'Recovered', 'Cases Today'],
+                        datasets: [{
+                            label: 'Current',
+                            data: [cases, death, recovered, todayCase],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(54, 162, 235, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: false
+                                }
+                            }]
+                        }
+                    }
+                });
+                //chart end
+                // console.log(JSON.stringify(res))
+            });
+            
+            // toggle dark mode
+        function toggleDarkMode(){
+            document.querySelector("body").classList.toggle("theme-dark");
+         }
+    </script>
+</body>
+
+</html>
